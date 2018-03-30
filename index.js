@@ -1,7 +1,6 @@
 function trigger() {
   var now = new Date();
-  //通知させたい時刻を条件にする
-  if (now.getHours() == 10 && now.getMinutes() == 0) {
+  if (now.getHours() == 18 && now.getMinutes() == 0) {
     main();
   }
 }
@@ -50,9 +49,9 @@ function sendSlack(message) {
     "attachments": [{
       "fallback": fallback_message,
       "color": "#2eb886",
-      "title": message["title"],
+      "title": message['category_detail'],
       "title_link": detail_link,
-      "text": newline_exchange(message["term"], 0) + '\n' + newline_exchange(message['note'], '0') + "\nカテゴリー: " + message['category_detail'],
+      "text": message["title"] + '\n' + newline_exchange(message["term"], 0) + '\n' + newline_exchange(message['note'], '0') + '\n' + newline_exchange(message["open_time"], 0),
     }],
   };
   var payload = JSON.stringify(jsonData);
