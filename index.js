@@ -44,6 +44,12 @@ function sendSlack(message) {
   var username = '東京ドームのイベント'; // 通知時に表示されるユーザー名
   var fallback_message = message["title"] + '\n' + newline_exchange(message['term']) + '\n' + newline_exchange(message['open_time']);
   var detail_link = message["detail_url"] ? message["detail_url"] : "https://www.tokyo-dome.co.jp/event/";
+  var thumbnail = message['thumbnail'] ? "https://www.tokyo-dome.co.jp" + message['thumbnail'] : "";
+  if (message["term"].match(/開場/)) {
+    var textmessage = message["title"] + '\n' + newline_exchange(message["term"], 0) + '\n' + newline_exchange(message['note'], 0) + thumbnail;
+  } else {
+    var textmessage = message["title"] + '\n' + newline_exchange(message["term"], 0) + '\n' + newline_exchange(message["open_time"], 0) + '\n' + newline_exchange(message['note'], 0) + thumbnail;
+  }
   var jsonData = {
     "username": username,
     "attachments": [{
@@ -51,7 +57,8 @@ function sendSlack(message) {
       "color": "#2eb886",
       "title": message['category_detail'],
       "title_link": detail_link,
-      "text": message["title"] + '\n' + newline_exchange(message["term"], 0) + '\n' + newline_exchange(message['note'], '0') + '\n' + newline_exchange(message["open_time"], 0),
+      "text": textmessage,
+      "thumb_url": thumbnail,
     }],
   };
   var payload = JSON.stringify(jsonData);
